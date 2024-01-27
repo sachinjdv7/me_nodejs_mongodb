@@ -1,9 +1,9 @@
-const express = require("express");
-const todoRoute = require("./todo.route");
-const captureDateMiddleware = require("../../middleware/middleware");
+import express from "express";
+import todoRoute from "./todo.route.js";
+import captureDateMiddleware from "../../middleware/middleware.js";
 const router = express.Router();
 
-router.use("/randomRoute", todoRoute);
+router.use("/todos", todoRoute);
 
 // Uncomment in Milestone 5
 // const testRoute = require("./test.route");
