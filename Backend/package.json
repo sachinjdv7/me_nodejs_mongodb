@@ -1,7 +1,6 @@
 {
   "name": "nodejsbyte1",
   "version": "1.0.0",
-  "type": "module",
   "description": "NodeJS first Byte",
   "main": "app.js",
   "scripts": {
