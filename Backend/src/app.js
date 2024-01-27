@@ -19,11 +19,16 @@ app.use("/v1", routes);
 // TODO - Create a MongoDB connection using Mongoose
 const connectMongoDB = async () => {
   try {
-    const connectionInsance = await mongoose.connect(config.mongoose.url);
-    console.log(connectionInsance);
-    console.log(`🚀 MongoDB is connnected`);
+    const connectionInsance = await mongoose.connect(
+      config.mongoose.url,
+      config.mongoose.options
+    );
+    console.log(
+      `\n🚀MongoDB connected DB HOST: ${connectionInsance.connection.host} `
+    );
   } catch (error) {
-    console.log(`MongoDB connection failed`, error);
+    console.log(`MongoDB connection failed`, error.message);
+    process.exit(1);
   }
 };
 // Start the Node server
@@ -33,9 +38,9 @@ connectMongoDB()
       console.log(`Express server is getting failed while connected`, error);
     });
     app.listen(config.port, () => {
-      console.log(`App is running on port ${config.port}`);
+      console.log(`🚀 App is running on port ${config.port}`);
     });
   })
   .catch((error) => {
-    console.log(`MongoDB connection failed !!!, ${error}`);
+    console.log(`MongoDB connection failed !!!, ${error.message}`);
   });
