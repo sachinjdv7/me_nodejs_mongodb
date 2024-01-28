@@ -8,10 +8,16 @@ const Todos = require("../../models/todo.model");
  *
  * Get todos with their "startDate" b/w startDateMin and startDateMax
  * curl http://localhost:8082/v1/todos?startDateMin=2020-11-04&startDateMax=2020-12-30
- * 
+ *
  */
 router.get("/", async (req, res) => {
-  res.send({});
+  console.log(
+    `URL:  /v1/todos.....${req.url == "/" ? "" : req.url}, Method:  ${
+      req.method
+    }, Timestamp: ${new Date()}`
+  );
+  const allTodos = await Todos.find({});
+  res.send(allTodos);
 });
 
 /**
@@ -20,9 +26,31 @@ router.get("/", async (req, res) => {
     -d '{"name": "Learn Nodejs by doing","startDate": "2021-01-07","endDate": "2021-01-09"}' \
     -H 'Content-Type: application/json'
 */
-// router.post("/", async (req, res) => {
-
-// });
+router.post("/", async (req, res) => {
+  const { name, startDate, endDate } = req.body;
+  console.log(
+    `[name]::${name} [startDate]:: ${startDate} [endDate]::${endDate}`
+  );
+  console.log(
+    `URL:  /v1/todos.....${req.url == "/" ? "" : req.url}, Method:  ${
+      req.method
+    }, Timestamp: ${new Date()}`
+  );
+  const newTodo = {
+    name,
+    startDate,
+    endDate,
+  };
+  Todos.create(newTodo, (err, newlyCreated) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send();
+    } else {
+      console.log(`[New todo item]::: ${newlyCreated}`);
+      res.status(201).send(newlyCreated);
+    }
+  });
+});
 
 /**
  * Update an existing TODO
@@ -32,9 +60,33 @@ router.get("/", async (req, res) => {
  * 
  * Nb: You'll need to change the "id" value to that of one of your todo items
 */
-// router.put("/", (req, res) => {
+router.put("/", (req, res) => {
+  console.log(
+    `URL:  /v1/todos ${req.url == "/" ? "" : req.url}, Method:  ${
+      req.method
+    }, Timestamp: ${new Date()}`
+  );
+  const { _id, name, startDate, endDate } = req.body;
+  console.log(`id:: ${_id}`);
 
-// });
+  const idToupdateTodo = _id;
+  const updatedTo = {
+    name,
+    startDate,
+    endDate,
+  };
+
+  Todos.findByIdAndUpdate(idToupdateTodo, updatedTo, (err, doc) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send();
+    } else if (doc === null) {
+      res.status(400).send({ erro: " Resouce not found" });
+    } else {
+      res.status(204).send(doc);
+    }
+  });
+});
 
 /**
  * Delete a TODO from the list
