@@ -16,8 +16,13 @@ router.get("/", async (req, res) => {
       req.method
     }, Timestamp: ${new Date()}`
   );
-  const allTodos = await Todos.find({});
-  res.send(allTodos);
+  await Todos.find({}, (err, allTodos) => {
+    if (err) {
+      res.status(500).send();
+    } else {
+      res.status(200).send(allTodos);
+    }
+  });
 });
 
 /**
@@ -94,8 +99,25 @@ router.put("/", (req, res) => {
  *
  * Nb: You'll need to change "<id-value>" to the "id" value of one of your todo items
  */
-// router.delete("/:id", (req, res) => {
+router.delete("/:id", (req, res) => {
+  const IdToDelete = req.params.id;
 
-// });
+  console.log(`[id]:: ${IdToDelete}`);
+
+  console.log(
+    `URL:  /v1/todos ${req.url == "/" ? "" : req.url}, Method:  ${
+      req.method
+    }, Timestamp: ${new Date()}`
+  );
+  console.log(`[id]:: ${IdToDelete}`);
+  Todos.findByIdAndDelete(IdToDelete, (err, result) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send();
+    } else {
+      res.status(204).send();
+    }
+  });
+});
 
 module.exports = router;
