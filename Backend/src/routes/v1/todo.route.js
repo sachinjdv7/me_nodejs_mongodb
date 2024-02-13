@@ -18,8 +18,6 @@ router.get("/", async (req, res) => {
     let startDateMin = new Date(req.query.startDateMin);
     startDateMin.setTime(startDateMin.getTime());
 
-    console.log(req.query.startDateMax);
-    console.log(req.query.startDateMin);
     Todos.find(
       {
         startDate: {
@@ -54,14 +52,7 @@ router.get("/", async (req, res) => {
 */
 router.post("/", async (req, res) => {
   const { name, startDate, endDate } = req.body;
-  console.log(
-    `[name]::${name} [startDate]:: ${startDate} [endDate]::${endDate}`
-  );
-  console.log(
-    `URL:  /v1/todos.....${req.url == "/" ? "" : req.url}, Method:  ${
-      req.method
-    }, Timestamp: ${new Date()}`
-  );
+
   const newTodo = {
     name,
     startDate,
@@ -87,13 +78,7 @@ router.post("/", async (req, res) => {
  * Nb: You'll need to change the "id" value to that of one of your todo items
 */
 router.put("/", (req, res) => {
-  console.log(
-    `URL:  /v1/todos ${req.url == "/" ? "" : req.url}, Method:  ${
-      req.method
-    }, Timestamp: ${new Date()}`
-  );
   const { _id, name, startDate, endDate } = req.body;
-  console.log(`id:: ${_id}`);
 
   const idToupdateTodo = _id;
   const updatedTo = {
@@ -123,14 +108,6 @@ router.put("/", (req, res) => {
 router.delete("/:id", (req, res) => {
   const IdToDelete = req.params.id;
 
-  console.log(`[id]:: ${IdToDelete}`);
-
-  console.log(
-    `URL:  /v1/todos ${req.url == "/" ? "" : req.url}, Method:  ${
-      req.method
-    }, Timestamp: ${new Date()}`
-  );
-  console.log(`[id]:: ${IdToDelete}`);
   Todos.findByIdAndDelete(IdToDelete, (err, result) => {
     if (err) {
       console.log(err);

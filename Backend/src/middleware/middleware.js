@@ -1,4 +1,4 @@
-const captureDateMiddleware = (req, res, next) => {
+const captureDateMiddleware = (req, _, next) => {
   console.log(
     `URL:  ${req.url}, Method:  ${req.method}, Timestamp: ${new Date()}`
   );
