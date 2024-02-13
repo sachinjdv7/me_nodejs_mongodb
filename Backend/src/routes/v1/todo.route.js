@@ -11,18 +11,39 @@ const Todos = require("../../models/todo.model");
  *
  */
 router.get("/", async (req, res) => {
-  console.log(
-    `URL:  /v1/todos.....${req.url == "/" ? "" : req.url}, Method:  ${
-      req.method
-    }, Timestamp: ${new Date()}`
-  );
-  await Todos.find({}, (err, allTodos) => {
-    if (err) {
-      res.status(500).send();
-    } else {
-      res.status(200).send(allTodos);
-    }
-  });
+  if (req.query.startDateMax && req.query.startDateMin) {
+    let startDateMax = new Date(req.query.startDateMax);
+    startDateMax.setTime(startDateMax.getTime());
+
+    let startDateMin = new Date(req.query.startDateMin);
+    startDateMin.setTime(startDateMin.getTime());
+
+    console.log(req.query.startDateMax);
+    console.log(req.query.startDateMin);
+    Todos.find(
+      {
+        startDate: {
+          $lte: startDateMax,
+          $gte: startDateMin,
+        },
+      },
+      (err, allTodos) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.send(allTodos);
+        }
+      }
+    );
+  } else {
+    await Todos.find({}, (err, allTodos) => {
+      if (err) {
+        res.status(500).send();
+      } else {
+        res.status(200).send(allTodos);
+      }
+    });
+  }
 });
 
 /**
