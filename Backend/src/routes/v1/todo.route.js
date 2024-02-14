@@ -15,7 +15,6 @@ const {
  * curl http://localhost:8082/v1/todos?startDateMin=2020-11-04&startDateMax=2020-12-30
  *
  */
-router.get("/", getTodoList);
 
 /**
  * Add a TODO to the list
@@ -23,7 +22,6 @@ router.get("/", getTodoList);
     -d '{"name": "Learn Nodejs by doing","startDate": "2021-01-07","endDate": "2021-01-09"}' \
     -H 'Content-Type: application/json'
 */
-router.post("/", postTodoItem);
 
 /**
  * Update an existing TODO
@@ -33,7 +31,6 @@ router.post("/", postTodoItem);
  * 
  * Nb: You'll need to change the "id" value to that of one of your todo items
 */
-router.put("/", updateTodoItem);
 
 /**
  * Delete a TODO from the list
@@ -41,6 +38,10 @@ router.put("/", updateTodoItem);
  *
  * Nb: You'll need to change "<id-value>" to the "id" value of one of your todo items
  */
+
+router.get("/", getTodoList);
+router.post("/", postTodoItem);
+router.put("/", updateTodoItem);
 router.delete("/:id", deleteTodoItem);
 
 module.exports = router;
