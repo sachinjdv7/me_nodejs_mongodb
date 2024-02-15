@@ -1,37 +1,7 @@
 const Todos = require("../models/todo.model");
+
 const getTodoList = async (req, res) => {
   try {
-    if (req.query.startDateMax && req.query.startDateMin) {
-      let startDateMax = new Date(req.query.startDateMax);
-      startDateMax.setTime(startDateMax.getTime());
-
-      let startDateMin = new Date(req.query.startDateMin);
-      startDateMin.setTime(startDateMin.getTime());
-
-      Todos.find(
-        {
-          startDate: {
-            $lte: startDateMax,
-            $gte: startDateMin,
-          },
-        },
-        (err, allTodos) => {
-          if (err) {
-            console.log(err);
-          } else {
-            res.send(allTodos);
-          }
-        }
-      );
-    } else {
-      await Todos.find({}, (err, allTodos) => {
-        if (err) {
-          res.status(500).send();
-        } else {
-          res.status(200).send(allTodos);
-        }
-      });
-    }
   } catch (error) {
     res.status(404).json({ message: "Could not fetch Todos from DB" });
   }
